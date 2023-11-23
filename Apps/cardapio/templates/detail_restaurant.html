@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+
+<div>
+    <h1>{{ restaurant }}</h1>
+</div>
+<div>
+    {% if categories %}
+    {% for category in categories %}
+    <div>
+        <span>{{ category.title }}</span>
+        <ul>
+            {% for product in category.get_products %}
+            <li>{{ product.name }} R$ {{ product.price }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>Esse restaurante não possui cardapio</p>
+    {% endif %}
+</div>
+<div>
+    <h4>Crie uma categoria</h4>
+    <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post">
+        {% csrf_token %}
+        {{ form_category.as_p }}
+        <input type="submit" value="Criar">
+    </form>
+    <h4>Adicione um produto</h4>
+    <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post">
+        {% csrf_token %}
+        {{ form_product.as_p }}
+        <input type="submit" value="add">
+    </form>
+</div>
+{% endblock %}

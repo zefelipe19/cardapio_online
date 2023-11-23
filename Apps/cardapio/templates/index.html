@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+<div>
+    <p>
+        Olá, seja bem vindo ao <strong>RESTAURANTS</strong>!
+        <br>
+        Essa é uma plataforma onde você pode cadastrar e criar um cardápio para o seu restaurante ou lanchonete de forma
+        super simples!
+    </p>
+    <p>Você pode ver alguns restaurantes cadastrados ou criar o seu <a href="{% url 'create_restaurant' %}">aqui</a></p>
+</div>
+<div>
+    <h2>restaurantes cadastrados</h2>
+    {% for restaurant in restaurants %}
+    <a href="{% url 'detail_restaurant' restaurant.slug %}">
+        <div>
+            <span>{{ restaurant.name }}</span>
+            <img src="{{ restaurant.logo.url }}" alt="" width="100px">
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
