@@ -45,7 +45,7 @@ def detail_restaurant(request, slug):
                 )
                 if category:
                     category.save()
-                    return redirect(reverse_lazy('index'))
+                    return redirect(reverse_lazy('detail_restaurant', args=[slug]))
             if form_product.is_valid():
                 product = Product(
                     restaurant=restaurant,
@@ -57,7 +57,7 @@ def detail_restaurant(request, slug):
                 )
                 if product:
                     product.save()
-                    return redirect(reverse_lazy('index'))
+                    return redirect(reverse_lazy('detail_restaurant', args=[slug]))
     else:
         form_category = CategoryMenuForm()
         form_product = ProductForm()
@@ -69,3 +69,19 @@ def detail_restaurant(request, slug):
         'form_product': form_product
     }
     return render(request, template_name, context)
+
+
+def detail_restaurant_category(request, slug):
+    template_name = 'detail_restaurant_category.html'
+
+    restaurant = get_object_or_404(Restaurant, slug=slug)
+    categories = CategoryMenu.objects.filter(restaurant=restaurant)
+
+    category_selected = request.GET.get('category')
+    if category_selected:
+        print(category_selected)
+        products = Product.objects.filter(category__title__icontains=category_selected)
+
+        return render(request, template_name, {'restaurant': restaurant, 'categories': categories, 'products': products})
+
+    return render(request, template_name, {'restaurant': restaurant, 'categories': categories,})

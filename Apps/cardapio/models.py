@@ -27,7 +27,7 @@ class Restaurant(BaseModelTamplate):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(f'{self.name}-{self.id}')
+            self.slug = slugify(f'{self.name}')
         super().save(*args, **kwargs)
         if self.logo:
             SIZE = (700, 700)
@@ -53,7 +53,7 @@ class CategoryMenu(BaseModelTamplate):
         verbose_name_plural = 'Categorias Restaurante'
 
     def __str__(self):
-        return f'{self.title} - {self.restaurant}'
+        return f'{self.title}'
     
 
     def get_products(self):

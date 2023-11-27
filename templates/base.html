@@ -5,13 +5,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTAURANTS</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block 'head' %}{% endblock %}
+    <title>{% block 'title' %}{% endblock %}RESTAURANTS</title>
 </head>
 
 <body>
     <header>
-        {% block 'header' %}
-        <h1>Bem Vindo ao RESTAURANTS!</h1>
+        {% block 'nav' %}
+        <h1>Bem Vindo ao <br>RESTAURANTS!</h1>
         <nav>
             <a href="{% url 'index' %}">Home</a>
             <a href="#">Sobre</a>
@@ -23,7 +25,11 @@
         {% endblock %}
     </main>
     <footer>
-        <span>Todos os direitos reservados a RESTAURANTS</span>
+        <span><small>Todos os direitos reservados a RESTAURANTS</small></span>
+        <nav>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="#">Sobre</a>
+        </nav>
     </footer>
 </body>
 

@@ -11,6 +11,7 @@
 </div>
 <div>
     <h2>restaurantes cadastrados</h2>
+    {% if restaurants %}
     {% for restaurant in restaurants %}
     <a href="{% url 'detail_restaurant' restaurant.slug %}">
         <div>
@@ -19,5 +20,6 @@
         </div>
     </a>
     {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}

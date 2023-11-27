@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
-{% block 'content' %}
+{% load static %}
 
-<div>
-    <h1>{{ restaurant }}</h1>
-</div>
+{% block 'head' %}
+<link rel="stylesheet" href="{% static 'css/cardapio.css' %}">
+{% endblock %}
+{% block 'title' %}{{ restaurant }} - {% endblock %}
+
+{% block 'nav' %}
+<img src="{{ restaurant.logo.url }}" alt="" width="50px">
+<h1>{{ restaurant }}</h1>
+<nav>
+    <a href="{% url 'detail_restaurant' restaurant.slug %}">Menu</a>
+    <a href="{% url 'detail_restaurant_category' restaurant.slug %}">Categorias</a>
+</nav>
+{% endblock %}
+
+{% block 'content' %}
 <div>
     {% if categories %}
     {% for category in categories %}
@@ -21,17 +33,49 @@
     {% endif %}
 </div>
 <div>
-    <h4>Crie uma categoria</h4>
-    <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post">
-        {% csrf_token %}
-        {{ form_category.as_p }}
-        <input type="submit" value="Criar">
-    </form>
-    <h4>Adicione um produto</h4>
-    <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post">
-        {% csrf_token %}
-        {{ form_product.as_p }}
-        <input type="submit" value="add">
-    </form>
+    <button id="newCategoryBtn">Nova Categoria</button>
+
+    <div id="newCategoryModal" class="modal hide">
+        <button  id="closeCategoryModalBtn">X</button>
+        <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post">
+            {% csrf_token %}
+            {{ form_category.as_p }}
+            <input type="submit" value="Criar">
+        </form>
+    </div>
+    
+    <button id="newProductBtn">Adicionar Produto</button>
+
+    <div id="newProductModal" class="modal hide">
+        <button id="closeProductModalBtn">X</button>
+        <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post">
+            {% csrf_token %}
+            {{ form_product.as_p }}
+            <input type="submit" value="add">
+        </form>
+    </div>
+
 </div>
+<script>
+    const newCategoryBtn = document.querySelector("#newCategoryBtn")
+    const newCategoryModal = document.querySelector("#newCategoryModal")
+    const closeCategoryModalBtn = document.querySelector("#closeCategoryModalBtn")
+
+    const newProductBtn = document.querySelector("#newProductBtn")
+    const newProductModal = document.querySelector("#newProductModal")
+    const closeProductModalBtn = document.querySelector("#closeProductModalBtn")
+
+    newCategoryBtn.addEventListener("click", (event) => {
+        newCategoryModal.classList.toggle("hide")
+    })
+    closeCategoryModalBtn.addEventListener("click", (event) => {
+        newCategoryModal.classList.toggle("hide")
+    })
+    newProductBtn.addEventListener("click", (event) => {
+        newProductModal.classList.toggle("hide")
+    })
+    closeProductModalBtn.addEventListener("click", (event) => {
+        newProductModal.classList.toggle("hide")
+    })
+</script>
 {% endblock %}
