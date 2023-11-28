@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<link rel="stylesheet" href="{% static 'css/cardapio.css' %}">
+{% endblock %}
 {% block 'content' %}
 <div>
     <p>
@@ -12,14 +17,17 @@
 <div>
     <h2>restaurantes cadastrados</h2>
     {% if restaurants %}
-    {% for restaurant in restaurants %}
-    <a href="{% url 'detail_restaurant' restaurant.slug %}">
-        <div>
-            <span>{{ restaurant.name }}</span>
-            <img src="{{ restaurant.logo.url }}" alt="" width="100px">
-        </div>
-    </a>
-    {% endfor %}
+    <div class="restaurants">
+        {% for restaurant in restaurants %}
+            <a href="{% url 'detail_restaurant' restaurant.slug %}">
+                <div class="restaurant">
+                    <span>{{ restaurant.name }}</span>
+                    <img src="{{ restaurant.logo.url }}" alt="">
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    
     {% endif %}
 </div>
 {% endblock %}
