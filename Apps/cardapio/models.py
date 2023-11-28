@@ -13,7 +13,7 @@ class BaseModelTamplate(models.Model):
 
 class Restaurant(BaseModelTamplate):
     name = models.CharField(max_length=255, verbose_name='Nome')
-    logo = models.ImageField(upload_to='restaurants/', verbose_name='Logo')
+    logo = models.ImageField(upload_to='restaurant/', verbose_name='Logo')
     contact = models.CharField(max_length=11, verbose_name='Telefone')
     slug = models.SlugField(blank=True, null=True)
 

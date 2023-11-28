@@ -7,4 +7,5 @@ urlpatterns = [
     path('restaurante/<slug:slug>', v.detail_restaurant, name='detail_restaurant'),
     path('restaurante/<slug:slug>/categorias', v.detail_restaurant_category, name='detail_restaurant_category'),
     path('novo-restaurante/', v.create_restaurant, name='create_restaurant'),
+    path('adm/<slug:slug>', v.admin_area, name='admin_area'),
 ]

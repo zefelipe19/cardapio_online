@@ -16,66 +16,23 @@
 {% endblock %}
 
 {% block 'content' %}
-<div>
+<div class="menu">
     {% if categories %}
     {% for category in categories %}
-    <div>
-        <span>{{ category.title }}</span>
-        <ul>
-            {% for product in category.get_products %}
-            <li>{{ product.name }} R$ {{ product.price }}</li>
-            {% endfor %}
-        </ul>
+    <h3>{{ category.title }}</h3>
+    <div class="products">
+        {% for product in category.get_products %}
+            <div class="product">
+                
+                <img src="{{ product.image.url }}" alt="">
+                <span>{{ product.name }}</span>
+                <span>R$ {{ product.price }}</span>
+            </div>
+        {% endfor %}
     </div>
     {% endfor %}
     {% else %}
     <p>Esse restaurante não possui cardapio</p>
     {% endif %}
 </div>
-<div>
-    <button id="newCategoryBtn">Nova Categoria</button>
-
-    <div id="newCategoryModal" class="modal hide">
-        <button  id="closeCategoryModalBtn">X</button>
-        <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post">
-            {% csrf_token %}
-            {{ form_category.as_p }}
-            <input type="submit" value="Criar">
-        </form>
-    </div>
-    
-    <button id="newProductBtn">Adicionar Produto</button>
-
-    <div id="newProductModal" class="modal hide">
-        <button id="closeProductModalBtn">X</button>
-        <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post">
-            {% csrf_token %}
-            {{ form_product.as_p }}
-            <input type="submit" value="add">
-        </form>
-    </div>
-
-</div>
-<script>
-    const newCategoryBtn = document.querySelector("#newCategoryBtn")
-    const newCategoryModal = document.querySelector("#newCategoryModal")
-    const closeCategoryModalBtn = document.querySelector("#closeCategoryModalBtn")
-
-    const newProductBtn = document.querySelector("#newProductBtn")
-    const newProductModal = document.querySelector("#newProductModal")
-    const closeProductModalBtn = document.querySelector("#closeProductModalBtn")
-
-    newCategoryBtn.addEventListener("click", (event) => {
-        newCategoryModal.classList.toggle("hide")
-    })
-    closeCategoryModalBtn.addEventListener("click", (event) => {
-        newCategoryModal.classList.toggle("hide")
-    })
-    newProductBtn.addEventListener("click", (event) => {
-        newProductModal.classList.toggle("hide")
-    })
-    closeProductModalBtn.addEventListener("click", (event) => {
-        newProductModal.classList.toggle("hide")
-    })
-</script>
 {% endblock %}
