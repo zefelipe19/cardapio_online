@@ -6,8 +6,11 @@ from django.http import HttpResponse
 from .models import Restaurant, CategoryMenu, Product
 from .forms import RestaurantForm, CategoryMenuForm, ProductForm
 
+import qrcode
+
 
 def index(request):
+    print(request.build_absolute_uri())
     template_name = 'index.html'
     try:
         restaurants = Restaurant.objects.all()
@@ -66,6 +69,11 @@ def detail_restaurant_category(request, slug):
 def admin_area(request, slug):
     template_name = 'admin_area.html'
     restaurant = get_object_or_404(Restaurant, slug=slug)
+    absolute_url = request.build_absolute_uri()
+
+    qr = qrcode.make(absolute_url)
+    print(qr)
+
     
     if request.method == 'POST':
         form_category = CategoryMenuForm(request.POST)
@@ -97,4 +105,4 @@ def admin_area(request, slug):
         form_category = CategoryMenuForm()
         form_product = ProductForm()
 
-    return render(request, template_name, {'restaurant': restaurant, 'form_category': form_category, 'form_product': form_product})
+    return render(request, template_name, {'restaurant': restaurant, 'form_category': form_category, 'form_product': form_product, 'qr': qr})
