@@ -1,5 +1,6 @@
-// detail_restaurant.html
+// admin_area.html
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("js_loaded")
     const newCategoryBtn = document.querySelector("#newCategoryBtn")
     const newCategoryModal = document.querySelector("#newCategoryModal")
     const closeCategoryModalBtn = document.querySelector("#closeCategoryModalBtn")
@@ -29,6 +30,21 @@ document.addEventListener("DOMContentLoaded", () => {
     closeProductModalBtn.addEventListener("click", (event) => {
         newProductModal.classList.toggle("hide")
         boxShadow.classList.toggle("hide")
+        body.classList.toggle("overflow")
+    })
+
+    const qrCodeModalBtn = document.querySelector("#qrCodeModalBtn")
+    const qrCodeCloseModalBtn = document.querySelector("#qrCodeCloseModalBtn")
+
+    const qrCodeModal = document.querySelector("#qrCodeModal")
+
+    qrCodeModalBtn.addEventListener("click", (event) => {
+        qrCodeModal.classList.toggle("hide")
+        body.classList.toggle("overflow")
+    })
+
+    qrCodeCloseModalBtn.addEventListener("click", (event) => {
+        qrCodeModal.classList.toggle("hide")
         body.classList.toggle("overflow")
     })
 })

@@ -4,9 +4,27 @@
 {% block 'head' %}
 <link rel="stylesheet" href="{% static 'css/cardapio.css' %}">
 {% endblock %}
+{% block 'nav' %}
+<img src="{{ restaurant.logo.url }}" alt="" width="50px">
+<h1>{{ restaurant }}</h1>
+<nav>
+    <a href="{% url 'detail_restaurant' restaurant.slug %}">Menu</a>
+    <a href="{% url 'detail_restaurant_category' restaurant.slug %}">Categorias</a>
+    
+    <a href="{% url 'admin_area' restaurant.slug %}">Adm Area</a>
+    
+</nav>
+{% endblock %}
 {% block 'content' %}
 <div>
-    <img src="{{qr}}" alt="{{qr}}">
+    <h3>Baixar QR Code</h3>
+    <button id="qrCodeModalBtn">Baixar</button>
+
+    <div id="qrCodeModal" class="modal hide">
+        <img src="{{ qr }}" alt="{{qr}}" width="100px">
+        <a href="{{ qr }}" download="qrcode.png">Baixar</a>
+        <button id="qrCodeCloseModalBtn">X</button>
+    </div>
 </div>
 <div>
     <hr>
