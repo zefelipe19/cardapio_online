@@ -40,11 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     qrCodeModalBtn.addEventListener("click", (event) => {
         qrCodeModal.classList.toggle("hide")
+        boxShadow.classList.toggle("hide")
         body.classList.toggle("overflow")
     })
 
     qrCodeCloseModalBtn.addEventListener("click", (event) => {
         qrCodeModal.classList.toggle("hide")
+        boxShadow.classList.toggle("hide")
         body.classList.toggle("overflow")
     })
 })
