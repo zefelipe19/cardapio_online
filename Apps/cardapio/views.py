@@ -1,3 +1,4 @@
+from django.core.files import File
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.http import HttpResponse
@@ -7,6 +8,7 @@ from .models import Restaurant, CategoryMenu, Product
 from .forms import RestaurantForm, CategoryMenuForm, ProductForm
 
 import qrcode
+import io
 
 
 def index(request):
@@ -66,14 +68,38 @@ def detail_restaurant_category(request, slug):
     return render(request, template_name, {'restaurant': restaurant, 'categories': categories,})
 
 
+
+def generate_qr_code(request):
+    absolute_url = request.build_absolute_uri()
+    
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+
+    qr.add_data(absolute_url)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+    buffer = io.BytesIO()
+    img.save(buffer)
+
+    buffer.seek(0)
+
+    filename = 'qrcode.png'
+    file = File(buffer, filename)
+
+    return file
+
+
 def admin_area(request, slug):
     template_name = 'admin_area.html'
     restaurant = get_object_or_404(Restaurant, slug=slug)
-    absolute_url = request.build_absolute_uri()
 
-    qr = qrcode.make(absolute_url)
-    print(qr)
-
+    restaurant_qrCode = generate_qr_code(request)
+    print(restaurant_qrCode)
     
     if request.method == 'POST':
         form_category = CategoryMenuForm(request.POST)
@@ -105,4 +131,4 @@ def admin_area(request, slug):
         form_category = CategoryMenuForm()
         form_product = ProductForm()
 
-    return render(request, template_name, {'restaurant': restaurant, 'form_category': form_category, 'form_product': form_product, 'qr': qr})
+    return render(request, template_name, {'restaurant': restaurant, 'form_category': form_category, 'form_product': form_product, 'qr': restaurant_qrCode})
