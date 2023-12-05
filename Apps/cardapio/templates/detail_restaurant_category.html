@@ -12,25 +12,39 @@
 <nav>
     <a href="{% url 'detail_restaurant' restaurant.slug %}">Menu</a>
     <a href="{% url 'detail_restaurant_category' restaurant.slug %}">Categorias</a>
+
+    <a href="{% url 'admin_area' restaurant.slug %}">Adm Area</a>
+
 </nav>
 {% endblock %}
 
 {% block 'content' %}
 <div>
     {% if categories %}
-        <form action="{% url 'detail_restaurant_category' restaurant.slug %}" method="get">
+    <form action="{% url 'detail_restaurant_category' restaurant.slug %}" method="get">
+        <div>
             {% for category in categories %}
-            <button name="category" value="{{ category.title }}">{{ category.title }}</button>
+            <button name="category" value="{{ category.title }}" class="btn">{{ category.title }}</button>
             {% endfor %}
-        </form>
+        </div>
+    </form>
     {% else %}
-        <p>Esse restaurante não possui cardapio</p>
+    <p>Esse restaurante não possui cardapio</p>
     {% endif %}
+    <br>
+    <div class="menu">
+        <div class="products">
+            {% if products %}
+            {% for product in products %}
+            <div class="product">
+                <img src="{{ product.image.url }}" alt="">
+                <span>{{ product.name }}</span>
+                <span>R$ {{ product.price }}</span>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
 
-    {% if products %}
-        {% for product in products %}
-            <span>{{ product.name }}</span>
-        {% endfor %}
-    {% endif %}
 </div>
 {% endblock %}

@@ -10,49 +10,60 @@
 <nav>
     <a href="{% url 'detail_restaurant' restaurant.slug %}">Menu</a>
     <a href="{% url 'detail_restaurant_category' restaurant.slug %}">Categorias</a>
-    
+
     <a href="{% url 'admin_area' restaurant.slug %}">Adm Area</a>
-    
+
 </nav>
 {% endblock %}
 {% block 'content' %}
 <div>
     <h3>Baixar QR Code</h3>
-    <button id="qrCodeModalBtn">Baixar</button>
+    <button id="qrCodeModalBtn" class="btn">Ver QR Code</button>
 
     <div id="qrCodeModal" class="modal hide">
-        <img src="{{ qr }}" alt="{{qr}}" width="100px">
+        <button id="qrCodeCloseModalBtn" class="btn red">X</button>
+        <img src="{{ qr }}" alt="{{qr}}" class="qr_img">
         <a href="{{ qr }}" download="qrcode.png">Baixar</a>
-        <button id="qrCodeCloseModalBtn">X</button>
     </div>
 </div>
 <div>
     <hr>
     <h1>Adm</h1>
     <div id="box-shadow" class="box-shadow hide"></div>
-    <button id="newCategoryBtn">Nova Categoria</button>
+    <button id="newCategoryBtn" class="btn">Nova Categoria</button>
 
     <div id="newCategoryModal" class="modal hide">
-        <button  id="closeCategoryModalBtn">X</button>
-        <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post" enctype="multipart/form-data">
+        <button id="closeCategoryModalBtn" class="btn red">X</button>
+        <form action="{% url 'admin_area' restaurant.slug %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form_category.as_p }}
-            <input type="submit" value="Criar">
+            <input type="submit" value="Criar" class="btn">
         </form>
     </div>
-    
-    <button id="newProductBtn">Adicionar Produto</button>
+
+    <button id="newProductBtn" class="btn">Adicionar Produto</button>
 
     <div id="newProductModal" class="modal hide">
-        <button id="closeProductModalBtn">X</button>
-        <form action="{% url 'detail_restaurant' restaurant.slug %}" method="post" enctype="multipart/form-data">
+        <button id="closeProductModalBtn" class="btn red">X</button>
+        <form action="{% url 'admin_area' restaurant.slug %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form_product.as_p }}
-            <input type="submit" value="add">
+            <input type="submit" value="Adicionar" class="btn">
         </form>
     </div>
 
+    <hr>
+</div>
+<div>
+    {% for category in categories %}
+    <div>
+        <h4>{{ category }}</h4>
+        {% for product in category.get_products %}
+        <span>{{ product.name }} - R$ {{ product.price }}</span>
+        {% endfor %}
+    </div>
+    {% endfor %}
 </div>
 
 <script src="{% static 'js/cardapio.js' %}" defer></script>
-{% endblock %} 
+{% endblock %}

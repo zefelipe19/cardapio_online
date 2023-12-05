@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 from PIL import Image
@@ -16,6 +17,7 @@ class Restaurant(BaseModelTamplate):
     logo = models.ImageField(upload_to='restaurant/', verbose_name='Logo')
     contact = models.CharField(max_length=11, verbose_name='Telefone')
     slug = models.SlugField(blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='user')
 
     class Meta:
         verbose_name = 'Restaurante'
@@ -52,6 +54,7 @@ class CategoryMenu(BaseModelTamplate):
         verbose_name = 'Categoria Restaurante'
         verbose_name_plural = 'Categorias Restaurante'
 
+
     def __str__(self):
         return f'{self.title}'
     
@@ -63,7 +66,7 @@ class CategoryMenu(BaseModelTamplate):
 
 class Product(BaseModelTamplate):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, verbose_name='Restaurante')
-    category = models.ForeignKey(CategoryMenu, on_delete=models.CASCADE, verbose_name='Categoria')
+    category = models.ForeignKey(CategoryMenu, on_delete=models.CASCADE, verbose_name='Categoria', related_name='products')
     is_active = models.BooleanField(default=True, verbose_name='Em estoque')
 
     name = models.CharField(max_length=255)

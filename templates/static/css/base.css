@@ -54,3 +54,16 @@ footer {
     align-items: center;
     padding: 1rem;
 }
+
+.btn {
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background-color: #2222ff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.red {
+    background-color: #ff0000;
+}

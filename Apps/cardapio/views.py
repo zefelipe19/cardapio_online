@@ -1,4 +1,3 @@
-from django.core.files import File
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.http import HttpResponse
@@ -8,14 +7,19 @@ from .models import Restaurant, CategoryMenu, Product
 from .forms import RestaurantForm, CategoryMenuForm, ProductForm
 from .utils import gerate_qr_code
 
+from django.db import connection
+
+def conections_counter():
+    print(f'Numero de consultas no banco: {len(connection.queries)}')
+
 
 def index(request):
-    print(request.build_absolute_uri())
     template_name = 'index.html'
     try:
         restaurants = Restaurant.objects.all()
     except:
         return HttpResponse("Erro interno no servidor")
+    conections_counter()
     return render(request, template_name, {'restaurants': restaurants})
 
 
@@ -26,10 +30,15 @@ def create_restaurant(request):
         form = RestaurantForm(request.POST, request.FILES)
         if form.is_valid():
             try:
+                if request.user.is_authenticated:
+                    user = request.user
+                else:
+                    user = None
                 restaurant = Restaurant(
                     name=form.cleaned_data['name'],
                     logo=form.cleaned_data['logo'],
-                    contact=form.cleaned_data['contact']
+                    contact=form.cleaned_data['contact'],
+                    user=user
                 )
                 if restaurant:
                     restaurant.save()
@@ -49,7 +58,7 @@ def detail_restaurant(request, slug):
     restaurant = get_object_or_404(Restaurant, slug=slug)
     categories = CategoryMenu.objects.filter(restaurant=restaurant)
 
-  
+    conections_counter()
 
     return render(request, template_name, {'restaurant': restaurant, 'categories': categories,})
 
@@ -58,20 +67,23 @@ def detail_restaurant_category(request, slug):
     template_name = 'detail_restaurant_category.html'
 
     restaurant = get_object_or_404(Restaurant, slug=slug)
-    categories = CategoryMenu.objects.filter(restaurant=restaurant)
+    categories = CategoryMenu.objects.filter(restaurant=restaurant).prefetch_related('products')
 
     category_selected = request.GET.get('category')
     if category_selected:
         products = Product.objects.filter(category__title__icontains=category_selected)
+        conections_counter()
 
         return render(request, template_name, {'restaurant': restaurant, 'categories': categories, 'products': products})
 
+    conections_counter()
     return render(request, template_name, {'restaurant': restaurant, 'categories': categories,})
 
 
 def admin_area(request, slug):
     template_name = 'admin_area.html'
     restaurant = get_object_or_404(Restaurant, slug=slug)
+    categories = CategoryMenu.objects.filter(restaurant=restaurant).prefetch_related('products')
 
     restaurant_qrCode = gerate_qr_code(request=request, slug=slug)
     
@@ -88,7 +100,7 @@ def admin_area(request, slug):
                 )
                 if category:
                     category.save()
-                    return redirect(reverse_lazy('detail_restaurant', args=[slug]))
+                    return redirect(reverse_lazy('admin_area', args=[slug]))
             if form_product.is_valid():
                 product = Product(
                     restaurant=restaurant,
@@ -100,9 +112,17 @@ def admin_area(request, slug):
                 )
                 if product:
                     product.save()
-                    return redirect(reverse_lazy('detail_restaurant', args=[slug]))
+                    return redirect(reverse_lazy('admin_area', args=[slug]))
     else:
         form_category = CategoryMenuForm()
         form_product = ProductForm()
 
-    return render(request, template_name, {'restaurant': restaurant, 'form_category': form_category, 'form_product': form_product, 'qr': restaurant_qrCode})
+    context = {
+        'restaurant': restaurant,
+        'categories': categories,
+        'form_category': form_category, 
+        'form_product': form_product, 
+        'qr': restaurant_qrCode
+    }
+    conections_counter()
+    return render(request, template_name, context)
