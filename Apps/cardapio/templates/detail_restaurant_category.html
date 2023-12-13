@@ -36,11 +36,16 @@
         <div class="products">
             {% if products %}
             {% for product in products %}
-            <div class="product">
-                <img src="{{ product.image.url }}" alt="">
-                <span>{{ product.name }}</span>
-                <span>R$ {{ product.price }}</span>
-            </div>
+            <a href="{% url 'product_detail' restaurant.slug product.id %}">
+                <div class="product">
+                    <img src="{{ product.image.url }}" alt="">
+                    <div>
+                        <span class="product-title">{{ product.name }}</span>
+                        <div class="product-description">{{ product.description }}</div>
+                        <span class="product-title">R$ {{ product.price }}</span>
+                    </div>
+                </div>
+            </a>
             {% endfor %}
             {% endif %}
         </div>

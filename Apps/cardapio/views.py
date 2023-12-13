@@ -80,6 +80,13 @@ def detail_restaurant_category(request, slug):
     return render(request, template_name, {'restaurant': restaurant, 'categories': categories,})
 
 
+def product_detail(request, slug, id):
+    template_name = 'product_detail.html'
+    restaurant = get_object_or_404(Restaurant, slug=slug)
+    product = get_object_or_404(Product, id=id, restaurant=restaurant)
+    return render(request, template_name, {'restaurant': restaurant, 'product': product})
+
+
 def admin_area(request, slug):
     template_name = 'admin_area.html'
     restaurant = get_object_or_404(Restaurant, slug=slug)

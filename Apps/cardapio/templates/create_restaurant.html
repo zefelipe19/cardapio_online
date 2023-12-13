@@ -1,10 +1,30 @@
 {% extends 'base.html' %}
 {% block 'content' %}
-<h2>Olá, bem-vindo!</h2>
-<h3>Vamos cadastrar seu restaurante</h3>
-<form action="{% url 'create_restaurant' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Criar" class="btn">
-</form>
+<section>
+    <h2>Olá, bem-vindo!</h2>
+    <h3>Vamos cadastrar seu restaurante</h3>
+    
+    <form action="{% url 'create_restaurant' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="id_name">Nome: 
+                {{ form.name }}
+            </label>
+        </div>
+        <div>
+            <label for="id_contact">Contato: 
+                {{ form.contact }}
+            </label>
+        </div>
+        <div>
+            <label for="logo">Logo: 
+                {{ form.logo }}
+            </label>
+        </div>
+        <input type="submit" value="Criar" class="btn">
+    </form>
+</section>
+<script>
+    
+</script>
 {% endblock %}

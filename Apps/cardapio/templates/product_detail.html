@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<link rel="stylesheet" href="{% static 'css/cardapio.css' %}">
+{% endblock %}
+{% block 'title' %}{{ restaurant }} - {% endblock %}
+
+{% block 'nav' %}
+<img src="{{ restaurant.logo.url }}" alt="" width="50px">
+<h1>{{ restaurant }}</h1>
+<nav>
+    <a href="{% url 'detail_restaurant' restaurant.slug %}">Menu</a>
+    <a href="{% url 'detail_restaurant_category' restaurant.slug %}">Categorias</a>
+    
+    <a href="{% url 'admin_area' restaurant.slug %}">Adm Area</a>
+    
+</nav>
+{% endblock %}
+
+{% block 'content' %}
+<div class="menu">
+    <div class="product-title">
+        <h2>{{ product.name }} - R$ {{ product.price }}</h2>
+        <img src="{{ product.image.url }}" alt="">
+    </div>
+    <div class="product-description">
+        {{ product.description }}
+    </div>
+</div>
+{% endblock %}

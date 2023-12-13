@@ -9,20 +9,22 @@
 
 .restaurants .restaurant {
     width: 100%;
-    background-color: #00000027;
     padding: 1rem;
     border-radius: 8px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-
-    box-shadow: #000000bd 5px 5px 10px;
+    border: 1px solid #919191
 }
 
 .restaurant img {
     width: 75px;
     height: 75px;
     object-fit: cover;
+}
+
+.restaurant:hover {
+    box-shadow: #919191 0px 0px 10px;
 }
 
 /* detail_restaurant.html */
@@ -33,29 +35,43 @@
     justify-content: center;
     padding: 0.5rem;
     gap: 1rem;
-    width: 100%;
-    height: 100%;
-    border: 1px solid #000;
 }
 
 .products {
-    display: grid;
-    grid-template-areas: "item item item";
-    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .product {
-    grid-area: "item";
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    flex-direction: row-reverse;
+    gap: 8px;
     justify-content: center;
     align-items: center;
+    border: 1px solid #919191;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: small;
 }
+
+.product div {
+    width: 70%;
+}
+
 .product img {
     height: 100px;
     width: 75px;
     object-fit: cover;
+    border-radius: 8px;
+}
+
+.product .product-title {
+    font-weight: 700;
+}
+
+.product .product-description {
+    color: #919191;
 }
 
 /* modal */
@@ -87,7 +103,7 @@
     padding: 1rem;
     z-index: 100;
 
-    background-color: #15bdff;
+    background-color: #2222ff;
     color: #fff;
 
     border-radius: 8px;

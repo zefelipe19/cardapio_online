@@ -70,7 +70,7 @@ class Product(BaseModelTamplate):
     is_active = models.BooleanField(default=True, verbose_name='Em estoque')
 
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='restaurant/products/', verbose_name='Foto', blank=True, null=True)
+    image = models.ImageField(upload_to='restaurant/products/', verbose_name='Foto',)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=1, verbose_name='Preço')
     description = models.TextField(blank=True, null=True, verbose_name='Descrição')
 
@@ -80,3 +80,12 @@ class Product(BaseModelTamplate):
 
     def __str__(self):
         return f'{self.name} - {self.category} - {self.restaurant}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.image:
+            SIZE = (700, 700)
+            img = Image.open(self.image.path)
+            img.thumbnail(SIZE, Image.LANCZOS)
+            img.save(self.image.path)       
+        return
