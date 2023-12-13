@@ -21,7 +21,8 @@
 {% block 'content' %}
 <div class="menu">
     <div class="product-title">
-        <h2>{{ product.name }} - R$ {{ product.price }}</h2>
+        <h2>{{ product.name }}</h2>
+        <h3>R$ {{ product.price }}</h3>
         <img src="{{ product.image.url }}" alt="">
     </div>
     <div class="product-description">

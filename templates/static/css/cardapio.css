@@ -68,6 +68,18 @@
 
 .product .product-title {
     font-weight: 700;
+    
+}
+
+.product-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-title img {
+    width: 200px;
+
 }
 
 .product .product-description {
